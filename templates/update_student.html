@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Update Student - SRMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="bi bi-pencil-square"></i> Update Student Record</h2>
+    <p class="text-muted">Find a student by ID and modify their details</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+        {% if not student %}
+        <!-- Step 1: Find the student -->
+        <div class="card">
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('update_student_page') }}">
+                    <input type="hidden" name="action" value="find">
+                    <div class="mb-3">
+                        <label for="student_id" class="form-label">
+                            <i class="bi bi-hash me-1"></i> Student ID <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="student_id" name="student_id"
+                               placeholder="Enter Student ID to update" required autofocus>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-search me-2"></i> Find Student
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <!-- Step 2: Update form with current values -->
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="bi bi-pencil me-2"></i> Editing Student ID: {{ student.id }}</h6>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Leave a field empty to keep its current value.
+                </div>
+                <form method="POST" action="{{ url_for('update_student_page') }}">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="student_id" value="{{ student.id }}">
+
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">
+                            <i class="bi bi-person me-1"></i> Student Name
+                        </label>
+                        <input type="text" class="form-control" id="name" name="name"
+                               placeholder="{{ student.name }}" value="{{ student.name }}">
+                        <div class="form-text">Current: {{ student.name }}</div>
+                    </div>
+
+                    <!-- Course -->
+                    <div class="mb-3">
+                        <label for="course" class="form-label">
+                            <i class="bi bi-book me-1"></i> Course
+                        </label>
+                        <input type="text" class="form-control" id="course" name="course"
+                               placeholder="{{ student.course }}" value="{{ student.course }}">
+                        <div class="form-text">Current: {{ student.course }}</div>
+                    </div>
+
+                    <!-- Semester -->
+                    <div class="mb-3">
+                        <label for="semester" class="form-label">
+                            <i class="bi bi-calendar3 me-1"></i> Semester
+                        </label>
+                        <input type="text" class="form-control" id="semester" name="semester"
+                               placeholder="{{ student.semester }}" value="{{ student.semester }}">
+                        <div class="form-text">Current: {{ student.semester }}</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-lg me-2"></i> Update Student
+                        </button>
+                        <a href="{{ url_for('update_student_page') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Search Different Student
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

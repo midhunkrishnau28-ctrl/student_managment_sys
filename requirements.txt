@@ -1,0 +1,5 @@
+# Core Dependencies
+Flask>=3.0.0
+
+# Optional: XSD Validation (already installed on this system)
+lxml>=4.9.0

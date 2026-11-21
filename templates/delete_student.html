@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Delete Student - SRMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="bi bi-trash3-fill"></i> Delete Student Record</h2>
+    <p class="text-muted">Find a student by ID and remove their record from students.xml</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+        {% if not student %}
+        <!-- Step 1: Find the student -->
+        <div class="card">
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('delete_student_page') }}">
+                    <input type="hidden" name="action" value="find">
+                    <div class="mb-3">
+                        <label for="student_id" class="form-label">
+                            <i class="bi bi-hash me-1"></i> Student ID <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="student_id" name="student_id"
+                               placeholder="Enter Student ID to delete" required autofocus>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-search me-2"></i> Find Student
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <!-- Step 2: Confirm deletion -->
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <i class="bi bi-exclamation-triangle me-2"></i> Confirm Deletion
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong>Warning:</strong> This action will permanently remove this student record from students.xml.
+                </div>
+
+                <table class="table table-borderless">
+                    <tr>
+                        <th style="width:40%"><i class="bi bi-hash me-1"></i> Student ID</th>
+                        <td>{{ student.id }}</td>
+                    </tr>
+                    <tr>
+                        <th><i class="bi bi-person me-1"></i> Name</th>
+                        <td>{{ student.name }}</td>
+                    </tr>
+                    <tr>
+                        <th><i class="bi bi-book me-1"></i> Course</th>
+                        <td>{{ student.course }}</td>
+                    </tr>
+                    <tr>
+                        <th><i class="bi bi-calendar3 me-1"></i> Semester</th>
+                        <td><span class="badge bg-info text-dark">{{ student.semester }}</span></td>
+                    </tr>
+                </table>
+
+                <form method="POST" action="{{ url_for('delete_student_page') }}">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="student_id" value="{{ student.id }}">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="bi bi-trash3 me-2"></i> Yes, Delete This Student
+                        </button>
+                        <a href="{{ url_for('delete_student_page') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-lg me-1"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
